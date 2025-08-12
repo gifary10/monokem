@@ -3,20 +3,20 @@ const questionText = document.getElementById('question-text');
 const answerText = document.getElementById('answer-text');
 const currentQuestionSpan = document.getElementById('current-question');
 const maxQuestionsSpan = document.getElementById('max-questions');
-const nextQuestionBtn = document.getElementById('next-question-btn');
-const showAnswerBtn = document.getElementById('show-answer-btn');
-const accessCodeInput = document.getElementById('access-code-input');
 const teamsContainer = document.getElementById('teams-container');
 const resetAllScoresBtn = document.getElementById('reset-all-scores');
 const showWinnersBtn = document.getElementById('show-winners-btn');
-const winnerModal = document.getElementById('winner-modal');
-const closeModalBtn = document.getElementById('close-modal');
-const winnerCardsContainer = document.getElementById('winner-cards-container');
 const soundToggleBtn = document.getElementById('sound-toggle');
 const backgroundMusic = document.getElementById('background-music');
 const correctSound = document.getElementById('correct-sound');
 const wrongSound = document.getElementById('wrong-sound');
 const winnerSound = document.getElementById('winner-sound');
+const wrongCustomSound = document.getElementById('wrong-custom-sound');
+const correctCustomSound = document.getElementById('correct-custom-sound');
+const winnerSection = document.getElementById('winner-section');
+const winnerPodium = document.getElementById('winner-podium');
+const closeWinnerBtn = document.getElementById('close-winner-btn');
+const confettiContainer = document.getElementById('confetti-container');
 
 // Game State
 let currentQuestionIndex = -1;
@@ -28,23 +28,7 @@ const teams = [
     { name: "5. MILLING", score: 0 },
     { name: "6. PPIC & WH", score: 0 }
 ];
-const ACCESS_CODE = "1234"; // Simple access code for demo purposes
 let isSoundOn = true;
-let isCodeEntered = false;
-
-// Confetti Settings
-const confettiSettings = {
-  target: 'winner-modal',
-  max: 150,
-  size: 1.5,
-  animate: true,
-  props: ['circle', 'square', 'triangle', 'line'],
-  colors: [[255, 215, 0], [192, 192, 192], [205, 127, 50], [46, 204, 113]],
-  clock: 25,
-  rotate: true,
-  start_from_edge: true,
-  respawn: true
-};
 
 // Initialize the game
 function initGame() {
@@ -82,15 +66,6 @@ function adjustScore(teamIndex, points) {
     if (points > 0) {
         playSound(correctSound);
         scoreElement.classList.add('score-animation-positive');
-        // Tambahkan efek confetti mini
-        const miniConfetti = new ConfettiGenerator({
-            target: scoreElement.parentNode,
-            max: 10,
-            size: 0.8,
-            clock: 15
-        });
-        miniConfetti.render();
-        setTimeout(() => miniConfetti.clear(), 1000);
     } else {
         playSound(wrongSound);
         scoreElement.classList.add('score-animation-negative');
@@ -101,44 +76,26 @@ function adjustScore(teamIndex, points) {
     }, 1000);
 }
 
-// Show next question
-function showNextQuestion() {
-    currentQuestionIndex++;
-    if (currentQuestionIndex >= questions.length) {
-        currentQuestionIndex = 0;
-    }
-    
+// Change question (direction: 1 = next, -1 = previous)
+function changeQuestion(direction) {
+    currentQuestionIndex += direction;
+    if (currentQuestionIndex >= questions.length) currentQuestionIndex = 0;
+    if (currentQuestionIndex < 0) currentQuestionIndex = questions.length - 1;
+
     const question = questions[currentQuestionIndex];
     questionText.textContent = question.question;
     answerText.textContent = question.answer;
-    
-    // Show answer if code was already entered
-    if (isCodeEntered) {
-        document.getElementById('blur-container').classList.add('unblurred');
-        showAnswerBtn.textContent = 'Soal Terbuka';
-        showAnswerBtn.disabled = true;
-    } else {
-        const blurContainer = document.getElementById('blur-container');
-        blurContainer.classList.remove('unblurred');
-        showAnswerBtn.textContent = 'Buka Soal';
-        showAnswerBtn.disabled = false;
-    }
-    
+
+    const answerBlurContainer = document.getElementById('answer-blur-container');
+    answerBlurContainer.classList.remove('unblurred'); // selalu blur saat pindah soal
+
     updateQuestionCounter();
 }
 
-// Show answer with access code
-function showAnswer() {
-    const code = accessCodeInput.value;
-    if (code === ACCESS_CODE) {
-        isCodeEntered = true;
-        document.getElementById('blur-container').classList.add('unblurred');
-        accessCodeInput.value = '';
-        showAnswerBtn.textContent = 'Soal Terbuka';
-        showAnswerBtn.disabled = true;
-    } else {
-        alert('Kode akses salah!');
-    }
+// Unblur answer
+function unblurAnswer() {
+    const answerBlurContainer = document.getElementById('answer-blur-container');
+    answerBlurContainer.classList.add('unblurred');
 }
 
 // Reset all scores
@@ -151,60 +108,56 @@ function resetAllScores() {
 
 // Show winners
 function showWinners() {
-    // Sort teams by score (descending)
-    const sortedTeams = [...teams].sort((a, b) => b.score - a.score);
+    const sortedTeams = [...teams].sort((a, b) => b.score - a.score).slice(0, 3);
     
-    winnerCardsContainer.innerHTML = '';
+    winnerPodium.innerHTML = '';
     sortedTeams.forEach((team, index) => {
-        const winnerCard = document.createElement('div');
-        winnerCard.className = 'winner-card';
+        const podiumStep = document.createElement('div');
+        podiumStep.className = `podium-step ${['gold', 'silver', 'bronze'][index]}`;
         
-        // Add podium classes based on position
-        let podiumClass = '';
         let medalIcon = '';
         if (index === 0) {
-            podiumClass = 'gold';
             medalIcon = '<i class="fas fa-crown"></i>';
         } else if (index === 1) {
-            podiumClass = 'silver';
             medalIcon = '<i class="fas fa-medal"></i>';
         } else if (index === 2) {
-            podiumClass = 'bronze';
             medalIcon = '<i class="fas fa-award"></i>';
         }
         
-        winnerCard.innerHTML = `
-            <div class="podium ${podiumClass}">
-                <div class="podium-rank">${medalIcon} ${index + 1}</div>
-                <div class="team-name">${team.name}</div>
-                <div class="team-score-container">
-                    <span class="score-label">Skor:</span>
-                    <span class="team-score">${team.score}</span>
-                </div>
-                <div class="confetti-canvas"></div>
-            </div>
+        podiumStep.innerHTML = `
+            <div class="podium-rank">${medalIcon} ${index + 1}</div>
+            <div class="podium-team">${team.name}</div>
+            <div class="podium-score">${team.score}</div>
         `;
-        winnerCardsContainer.appendChild(winnerCard);
+        
+        winnerPodium.appendChild(podiumStep);
     });
     
-    winnerModal.style.display = 'flex';
+    winnerSection.classList.add('show');
     playSound(winnerSound);
-    
-    // Inisialisasi confetti hanya untuk pemenang pertama
-    if (sortedTeams.length > 0) {
-        setTimeout(() => {
-            const confetti = new ConfettiGenerator(confettiSettings);
-            confetti.render();
-            
-            // Hentikan confetti setelah 5 detik
-            setTimeout(() => confetti.clear(), 5000);
-        }, 500);
-    }
+    createConfetti();
 }
 
-// Close modal
-function closeModal() {
-    winnerModal.style.display = 'none';
+// Close winner display
+function closeWinnerDisplay() {
+    winnerSection.classList.remove('show');
+    confettiContainer.innerHTML = '';
+}
+
+// Create confetti effect
+function createConfetti() {
+    confettiContainer.innerHTML = '';
+    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+    
+    for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.left = `${Math.random() * 100}%`;
+        confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        confetti.style.animationDelay = `${Math.random() * 2}s`;
+        confettiContainer.appendChild(confetti);
+    }
 }
 
 // Toggle sound
@@ -232,13 +185,50 @@ function updateQuestionCounter() {
     currentQuestionSpan.textContent = currentQuestionIndex + 1;
 }
 
+// Keyboard navigation & score control
+let lastNumberKey = null;
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') {
+        changeQuestion(1);
+    } else if (e.key === 'ArrowLeft') {
+        changeQuestion(-1);
+    } else if (e.key === 'Enter') {
+        unblurAnswer();
+        playSound(correctCustomSound); 
+    } else if (e.key === '0') {
+        playSound(wrongCustomSound); 
+    }
+
+    if (['1','2','3','4','5','6'].includes(e.key)) {
+        lastNumberKey = parseInt(e.key, 10) - 1;
+        return;
+    }
+
+    if (lastNumberKey !== null) {
+        if (e.key === '+') {
+            adjustScore(lastNumberKey, 10);
+            lastNumberKey = null;
+        } else if (e.key === '-') {
+            adjustScore(lastNumberKey, -5);
+            lastNumberKey = null;
+        } else {
+            lastNumberKey = null;
+        }
+    }
+});
+
 // Event Listeners
-nextQuestionBtn.addEventListener('click', showNextQuestion);
-showAnswerBtn.addEventListener('click', showAnswer);
 resetAllScoresBtn.addEventListener('click', resetAllScores);
 showWinnersBtn.addEventListener('click', showWinners);
-closeModalBtn.addEventListener('click', closeModal);
+closeWinnerBtn.addEventListener('click', closeWinnerDisplay);
 soundToggleBtn.addEventListener('click', toggleSound);
 
-// Initialize the game
+// Init
 initGame();
+// Set volume level
+backgroundMusic.volume = 0.5; // 50%
+correctSound.volume = 1.0;
+wrongSound.volume = 1.0;
+wrongCustomSound.volume = 1.0;
+winnerSound.volume = 1.0;
