@@ -4,79 +4,79 @@ const questions = [
         answer: "17 Agustus 1945"
     },
     {
-        question: "Siapa yang membacakan teks proklamasi kemerdekaan Indonesia?",
-        answer: "Ir. Soekarno"
+        question: "Candi terbesar di Indonesia adalah…",
+        answer: "Candi Borobudur"
     },
     {
-        question: "Apa ibu kota negara Indonesia saat ini?",
-        answer: "Jakarta (menuju Ibu Kota Nusantara/Ibu Kota Negara - IKN)"
+        question: "Gunung tertinggi di Indonesia adalah…",
+        answer: "Gunung Puncak Jaya (Carstensz Pyramid)"
     },
     {
-        question: "Apa nama mata uang resmi Indonesia?",
-        answer: "Rupiah"
+        question: "Zona aman di jalur evakuasi biasanya ditandai dengan warna…",
+        answer: "Hijau"
     },
     {
-        question: "Siapa penemu bola lampu pijar?",
-        answer: "Thomas Alva Edison"
+        question: "Dokumen yang memuat informasi bahaya dan penanganan bahan kimia disebut…",
+        answer: "MSDS (Material Safety Data Sheet) atau SDS"
     },
     {
-        question: "Apa unsur kimia dari air?",
-        answer: "H₂O"
+        question: "Tingkat kebisingan di atas berapa dB dianggap berbahaya untuk pendengaran?",
+        answer: "85 dB"
     },
     {
         question: "Apa nama planet terbesar di tata surya kita?",
         answer: "Jupiter"
     },
     {
-        question: "Apa arti dari HSE dalam dunia industri?",
-        answer: "Health, Safety, and Environment"
+        question: "Apa kepanjangan dari K3?",
+        answer: "Keselamatan dan Kesehatan Kerja"
     },
     {
-        question: "Sebutkan 3 alat pelindung diri (APD) yang wajib digunakan di area produksi!",
-        answer: "Helm, safety shoes, masker"
+        question: "Proklamasi Kemerdekaan Indonesia dibacakan pada hari apa?",
+        answer: "Jumat"
     },
     {
-        question: "Apa yang dimaksud dengan semboyan 'Bhinneka Tunggal Ika'?",
-        answer: "Berbeda-beda tetapi tetap satu jua"
+        question: "Bendera merah putih dijahit oleh siapa?",
+        answer: "Fatmawati"
     },
     {
-        question: "Siapa Presiden Indonesia ke-7?",
-        answer: "Joko Widodo"
+        question: "Siapa ilmuwan yang menemukan teori relativitas?",
+        answer: " Albert Einstein"
     },
     {
-        question: "Apa nama lagu kebangsaan Indonesia?",
-        answer: "Indonesia Raya"
+        question: "Tari Piring berasal dari provinsi…",
+        answer: "Sumatera Barat"
     },
     {
-        question: "Apa lambang negara Indonesia?",
-        answer: "Garuda Pancasila"
+        question: "Siapa pahlawan nasional wanita yang dikenal sebagai pejuang emansipasi wanita Indonesia?",
+        answer: "Raden Adjeng Kartini"
     },
     {
-        question: "Apa yang harus dilakukan karyawan jika terjadi kecelakaan kerja ringan?",
-        answer: "Melapor ke atasan dan HSE, kemudian mendapatkan pertolongan pertama"
+        question: "Candi Borobudur terletak di provinsi…",
+        answer: "Jawa Tengah"
     },
     {
-        question: "Apa fungsi utama UUD 1945?",
-        answer: "Sebagai dasar hukum tertinggi di Indonesia"
+        question: "Siapakah Presiden Republik Indonesia ke-3?",
+        answer: "B.J. Habibie"
     },
     {
-        question: "Apa nama samudra yang paling luas di dunia?",
-        answer: "Samudra Pasifik"
+        question: "Siapakah yang mengetik naskah Proklamasi Kemerdekaan Indonesia?",
+        answer: "Sayuti Melik"
     },
     {
-        question: "Sebutkan lima sila dalam Pancasila secara berurutan!",
-        answer: "1. Ketuhanan Yang Maha Esa, 2. Kemanusiaan yang adil dan beradab, 3. Persatuan Indonesia, 4. Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan, 5. Keadilan sosial bagi seluruh rakyat Indonesia"
+        question: "Dimana teks proklamasi dibacakan?",
+        answer: "Jalan Pegangsaan Timur No. 56, Jakarta"
     },
     {
-        question: "Apa prosedur jika ada kebocoran bahan kimia?",
-        answer: "Evakuasi, laporkan ke HSE, dan ikuti prosedur penanganan tumpahan"
+        question: "Zat kimia dengan rumus H₂O adalah…",
+        answer: "Air"
     },
     {
-        question: "Apa arti dari warna merah dan putih pada bendera Indonesia?",
-        answer: "Merah berarti berani, putih berarti suci"
+        question: "Planet terdekat dengan matahari adalah…",
+        answer: "Merkurius"
     },
     {
-        question: "Siapa tokoh yang dikenal sebagai 'Bapak Proklamator'?",
-        answer: "Soekarno dan Hatta"
+        question: "Alat untuk mengukur suhu disebut…",
+        answer: "Termometer"
     }
 ];
